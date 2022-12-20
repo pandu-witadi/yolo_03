@@ -1,0 +1,7 @@
+fastapi
+python-decouple
+uvicorn
+celery
+redis
+python-multipart
+pydantic

@@ -1,0 +1,16 @@
+python-decouple
+celery
+kombu
+amqp
+redis
+torch
+torchvision
+matplotlib
+pydantic
+opencv-python
+pandas
+IPython
+psutil
+PyYAML
+tqdm
+seaborn

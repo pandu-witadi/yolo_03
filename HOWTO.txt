@@ -1,0 +1,61 @@
+# === STEP 00
+# === make sure redis and rabbitmq ... running
+
+# === STEP 01
+# === create directory structure like below
+
+- yolo_03
+    - ml_api
+    - ml_celery
+    - ml_client
+
+
+# note:
+> python virtual environment (venv) of ml_celery install in root directory (yolo_03)
+>> The ml_celery program can be used to start the worker (you need to run the worker in the directory above directory ml_celery)
+>> ml_celery worker must be able to write in ml_api
+
+# === STEP 02
+# === create virtual env and install each reqs file
+
+# ml_celery
+cd yolo_03
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install pip -U pip
+pip install -r reqs_ml_celery.txt
+celery -A ml_celery.index worker -l INFO --pool=solo
+
+# -- or using pm2
+pm2 --name=ml_celery start "celery -A ml_celery.index worker -l INFO --pool=solo"
+
+
+
+# ml_api
+cd yolo_03/ml_api
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install pip -U pip
+pip install -r reqs_ml_api.txt
+uvicorn index:app --host 0.0.0.0 --port 5155 --reload
+
+# -- or using pm2
+pm2 --name=ml_api start "uvicorn index:app --host 0.0.0.0 --port 5155"
+
+
+
+# ml_client
+cd yolo_03/ml_client
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install pip -U pip
+pip install -r reqs_ml_client.txt
+uvicorn index:app --host 0.0.0.0 --port 5156 --reload
+
+# -- or using pm2
+pm2 --name=ml_client start "uvicorn index:app --host 0.0.0.0 --port 5156"
+
+
+# === STEP 03
+cd yolo_03
+pm2 start yolo_03.run.config.js

@@ -1,0 +1,5 @@
+fastapi
+python-decouple
+uvicorn
+pydantic
+Jinja2
